@@ -1,6 +1,4 @@
-/* 
- * Package Imports
-*/
+const session = require('express-session');
 
 const path = require("path");
 require("dotenv").config();
@@ -18,6 +16,7 @@ const app = express();
 const PORT = 3000;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 /*
  * Passport Configurations
@@ -39,7 +38,11 @@ app.use(partials());
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
-
+app.use(session({
+  secret: SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
 
 
 /*

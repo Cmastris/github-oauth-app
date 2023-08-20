@@ -1,9 +1,12 @@
-const session = require('express-session');
-
 const path = require("path");
 require("dotenv").config();
 const express = require('express');
 const partials = require('express-partials');
+
+const passport = require('passport');
+const GitHubStrategy = require('passport-github2').Strategy;
+
+const session = require('express-session');
 
 
 const app = express();
@@ -22,9 +25,19 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
  * Passport Configurations
 */
 
+// https://www.passportjs.org/concepts/authentication/strategies/
+// https://www.passportjs.org/packages/passport-github2/
 
-
-
+passport.use(new GitHubStrategy(
+  {
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+  }
+));
 
 
 
@@ -43,6 +56,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+app.use(passport.initialize());
 
 
 /*

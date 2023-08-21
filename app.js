@@ -75,7 +75,7 @@ app.use(passport.session());
 
 app.get('/', (req, res) => {
   res.render('index', { user: req.user });
-})
+});
 
 app.get('/account', (req, res) => {
   res.render('account', { user: req.user });
@@ -83,14 +83,18 @@ app.get('/account', (req, res) => {
 
 app.get('/login', (req, res) => {
   res.render('login', { user: req.user });
-})
+});
 
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
 
+app.get('/auth/github',
+  passport.authenticate('github', { scope: ['user'] }));
 
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login', successRedirect: '/account' }));
 
 
 /*

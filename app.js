@@ -27,6 +27,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // https://www.passportjs.org/concepts/authentication/strategies/
 // https://www.passportjs.org/packages/passport-github2/
+// https://www.passportjs.org/concepts/authentication/sessions/
 
 passport.use(new GitHubStrategy(
   {
@@ -39,6 +40,13 @@ passport.use(new GitHubStrategy(
   }
 ));
 
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 
 /*
